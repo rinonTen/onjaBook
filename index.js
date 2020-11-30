@@ -1,4 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from "./Components/App"
-ReactDOM.render(<App />, document.getElementById('root'))
+import { BrowserRouter as Router } from 'react-router-dom';
+
+import { ContextProvider } from './Context';
+
+import App from "./App"
+ReactDOM.render(
+    <ContextProvider>
+        <Router>
+            <App />
+        </Router>
+    </ContextProvider>,
+    document.getElementById('root'))
