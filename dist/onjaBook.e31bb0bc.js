@@ -33997,47 +33997,7 @@ function ContextProvider({
     }
   }, children);
 }
-},{"react":"node_modules/react/index.js","./feed.json":"feed.json"}],"Components/HeaderComponent.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = HeaderComponents;
-
-var _react = _interopRequireDefault(require("react"));
-
-var _reactRouterDom = require("react-router-dom");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function HeaderComponents() {
-  return /*#__PURE__*/_react.default.createElement("header", null, /*#__PURE__*/_react.default.createElement("nav", null, /*#__PURE__*/_react.default.createElement("ul", null, /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
-    to: "/"
-  }, "Feed")), /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
-    to: "/addPost"
-  }, "Add a post")), /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
-    to: "/options"
-  }, "Username")))));
-}
-},{"react":"node_modules/react/index.js","react-router-dom":"node_modules/react-router-dom/esm/react-router-dom.js"}],"Pages/Header.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = Header;
-
-var _react = _interopRequireDefault(require("react"));
-
-var _HeaderComponent = _interopRequireDefault(require("../Components/HeaderComponent"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function Header() {
-  return /*#__PURE__*/_react.default.createElement(_HeaderComponent.default, null);
-}
-},{"react":"node_modules/react/index.js","../Components/HeaderComponent":"Components/HeaderComponent.js"}],"node_modules/shallowequal/index.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","./feed.json":"feed.json"}],"node_modules/shallowequal/index.js":[function(require,module,exports) {
 //
 
 module.exports = function shallowEqual(objA, objB, compare, compareContext) {
@@ -35958,7 +35918,64 @@ exports.ServerStyleSheet = Ue;
 "production" !== "development" && "undefined" != typeof navigator && "ReactNative" === navigator.product && console.warn("It looks like you've imported 'styled-components' on React Native.\nPerhaps you're looking to import 'styled-components/native'?\nRead more about this at https://www.styled-components.com/docs/basics#react-native"), "production" !== "development" && "test" !== "development" && (window["__styled-components-init__"] = window["__styled-components-init__"] || 0, 1 === window["__styled-components-init__"] && console.warn("It looks like there are several instances of 'styled-components' initialized in this application. This may cause dynamic styles to not render properly, errors during the rehydration process, a missing theme prop, and makes your application bigger without good reason.\n\nSee https://s-c.sh/2BAXzed for more info."), window["__styled-components-init__"] += 1);
 var _default = qe;
 exports.default = _default;
-},{"react-is":"node_modules/react-is/index.js","react":"node_modules/react/index.js","shallowequal":"node_modules/shallowequal/index.js","@emotion/stylis":"node_modules/@emotion/stylis/dist/stylis.browser.esm.js","@emotion/unitless":"node_modules/@emotion/unitless/dist/unitless.browser.esm.js","@emotion/is-prop-valid":"node_modules/@emotion/is-prop-valid/dist/is-prop-valid.browser.esm.js","hoist-non-react-statics":"node_modules/hoist-non-react-statics/dist/hoist-non-react-statics.cjs.js","process":"../../AppData/Roaming/npm/node_modules/parcel-bundler/node_modules/process/browser.js"}],"Components/FeedItems.js":[function(require,module,exports) {
+},{"react-is":"node_modules/react-is/index.js","react":"node_modules/react/index.js","shallowequal":"node_modules/shallowequal/index.js","@emotion/stylis":"node_modules/@emotion/stylis/dist/stylis.browser.esm.js","@emotion/unitless":"node_modules/@emotion/unitless/dist/unitless.browser.esm.js","@emotion/is-prop-valid":"node_modules/@emotion/is-prop-valid/dist/is-prop-valid.browser.esm.js","hoist-non-react-statics":"node_modules/hoist-non-react-statics/dist/hoist-non-react-statics.cjs.js","process":"../../AppData/Roaming/npm/node_modules/parcel-bundler/node_modules/process/browser.js"}],"Components/HeaderComponent.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = HeaderComponents;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _reactRouterDom = require("react-router-dom");
+
+var _styledComponents = _interopRequireDefault(require("styled-components"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const Ul = _styledComponents.default.ul`
+    display: flex;
+    justify-content: space-between;
+
+    & a {
+        font-size: 24px;
+        line-height: 22px;
+        color: #000000;
+    }
+
+    & a:focus {
+        font-weight: bold;
+    }
+`;
+
+function HeaderComponents() {
+  return /*#__PURE__*/_react.default.createElement("header", null, /*#__PURE__*/_react.default.createElement("nav", null, /*#__PURE__*/_react.default.createElement(Ul, null, /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
+    to: "/"
+  }, "Feed")), /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
+    to: "/addPost"
+  }, "Add a post")), /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
+    to: "/options"
+  }, "Username")))));
+}
+},{"react":"node_modules/react/index.js","react-router-dom":"node_modules/react-router-dom/esm/react-router-dom.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js"}],"Pages/Header.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = Header;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _HeaderComponent = _interopRequireDefault(require("../Components/HeaderComponent"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function Header() {
+  return /*#__PURE__*/_react.default.createElement(_HeaderComponent.default, null);
+}
+},{"react":"node_modules/react/index.js","../Components/HeaderComponent":"Components/HeaderComponent.js"}],"Components/FeedItems.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -35972,6 +35989,22 @@ var _styledComponents = _interopRequireDefault(require("styled-components"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+const Section = _styledComponents.default.section`
+    margin-bottom: 32px;
+    background-color: #ffffff;
+    padding: 12px; 
+`;
+const Article = _styledComponents.default.article`
+    margin-bottom: 16px;
+
+    & img {
+        margin-bottom: 16px;
+    }
+
+    & button {
+        margin-right: 16px;
+    }
+`;
 const Profile_img = _styledComponents.default.img`
 max-width: 40px;
 height: 40px;
@@ -35980,6 +36013,7 @@ border-radius: 50%;
 const Feed_header = _styledComponents.default.header`
     display: flex;
     justify-content: space-between;
+    margin-bottom: 32px;
 
     & span {
         display: block;
@@ -35990,9 +36024,15 @@ const Feed_header = _styledComponents.default.header`
          column-gap: 32px;
     }
 `;
-const Comment_container = _styledComponents.default.div`
+const Feed_article = _styledComponents.default.div`
     display: flex;
     justify-content: space-between;
+`;
+const Comment_container = _styledComponents.default.div`
+    & div {
+        display: flex;
+        column-gap: 48px;
+    }
     & span {
         display: block;
     }
@@ -36009,9 +36049,7 @@ function FeedItems({
   id,
   increaseLikes
 }) {
-  return /*#__PURE__*/_react.default.createElement("section", {
-    className: "feed__section"
-  }, /*#__PURE__*/_react.default.createElement("div", {
+  return /*#__PURE__*/_react.default.createElement(Section, null, /*#__PURE__*/_react.default.createElement("div", {
     className: "feed__container"
   }, /*#__PURE__*/_react.default.createElement(Feed_header, {
     className: "feed_header"
@@ -36025,11 +36063,7 @@ function FeedItems({
     className: "feed__time_container"
   }, /*#__PURE__*/_react.default.createElement("time", {
     dateTime: date
-  }, date))), /*#__PURE__*/_react.default.createElement("article", {
-    className: "feed__legend"
-  }, legend), /*#__PURE__*/_react.default.createElement("div", {
-    className: "feed__image_container"
-  }, /*#__PURE__*/_react.default.createElement("img", {
+  }, date))), /*#__PURE__*/_react.default.createElement(Article, null, legend), /*#__PURE__*/_react.default.createElement(Article, null, /*#__PURE__*/_react.default.createElement("img", {
     src: url,
     alt: `${username}'s new post`
   }), /*#__PURE__*/_react.default.createElement("div", {
@@ -36037,13 +36071,11 @@ function FeedItems({
   }, /*#__PURE__*/_react.default.createElement("button", {
     onClick: () => increaseLikes(id),
     className: "feed__like_button"
-  }, "Like"), /*#__PURE__*/_react.default.createElement("span", null, likes))), /*#__PURE__*/_react.default.createElement("article", {
-    className: "feed__component"
-  }, /*#__PURE__*/_react.default.createElement(Comment_container, null, /*#__PURE__*/_react.default.createElement(Profile_img, {
+  }, "Like"), /*#__PURE__*/_react.default.createElement("span", null, likes))), /*#__PURE__*/_react.default.createElement(Feed_article, null, /*#__PURE__*/_react.default.createElement(Comment_container, null, /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement(Profile_img, {
     className: "feed__profile",
     src: profile,
     alt: `${username}'s profile picture`
-  }), /*#__PURE__*/_react.default.createElement("span", null, username), /*#__PURE__*/_react.default.createElement("p", {
+  }), /*#__PURE__*/_react.default.createElement("span", null, username)), /*#__PURE__*/_react.default.createElement("p", {
     className: "feed__comment"
   }, comment)), /*#__PURE__*/_react.default.createElement("p", {
     className: "feed__time_container"
