@@ -11,6 +11,9 @@ function ContextProvider({children}) {
             case "UPDATED_LIKES": {
                 return {...state, feed: action.updatedFeed}
             }
+            case "SET_COMMENT": {
+                return {...state, feed: action.updatedComment}
+            }
             default:
             return state
         }
@@ -36,9 +39,33 @@ function ContextProvider({children}) {
         })
         dispatch({type: "UPDATED_LIKES", updatedFeed: newFeed})
     }
+
+
+    function addComment(e, id) { 
+        e.preventDefault();
+        const newComment = {
+            "id": Date.now(),
+            "comment": e.target.comment.value,
+            "date": new Date().toLocaleDateString(),
+        }
+
+         feed.map(feed => {
+			if (feed.id === id) {
+            return {
+                ...feed,
+                comments: feed.comments.push(newComment)
+            }
+        }
+        return feed
+        })
+         
+      dispatch({type: "SET_COMMENT", updatedComment: feed})
+    //   reset the input
+      e.target.comment.value="";
+    }
      
     return (
-        <Context.Provider value={{feed, increaseLikes}}>
+        <Context.Provider value={{feed, increaseLikes, addComment }}>
             {children}
         </Context.Provider>
     )

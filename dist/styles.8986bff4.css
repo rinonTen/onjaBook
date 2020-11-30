@@ -17,4 +17,8 @@ a {
     text-decoration: none;
 }
 
+label {
+    display: block;
+}
+
 /*# sourceMappingURL=/styles.8986bff4.css.map */

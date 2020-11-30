@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Styled from 'styled-components';
 
 const Section = Styled.section`
     margin-bottom: 32px;
     background-color: #ffffff;
     padding: 12px; 
+    border-radius: 4px;
 `
 const Article = Styled.article`
     margin-bottom: 16px;
@@ -51,7 +52,24 @@ const Comment_container = Styled.div`
     }
 `
 
-export default function FeedItems({ username, profile, url, legend, date, likes, comment, id, increaseLikes }) {
+export default function FeedItems({ username, profile, url, legend, date, likes, comments, id, increaseLikes, addComment }) {
+    const commentsElement = comments && comments.map(comment => {
+        return <Feed_article key={comment.id}>
+            <Comment_container>
+                <div>
+                    <Profile_img className="feed__profile" src={profile} alt={`${username}'s profile picture`} />
+                    <span>{username}</span>
+                </div>
+                <p className="feed__comment">
+                    {comment.comment}
+                </p>
+            </Comment_container>
+            <p className="feed__time_container">
+                <time dateTime={date}>{comment.date}</time>
+            </p>
+        </Feed_article>
+    })
+    
     return (
         <Section>
             <div className="feed__container">
@@ -72,20 +90,11 @@ export default function FeedItems({ username, profile, url, legend, date, likes,
                         <span>{likes}</span>
                     </div>
                 </Article>
-                <Feed_article>
-                    <Comment_container>
-                        <div>
-                            <Profile_img className="feed__profile" src={profile} alt={`${username}'s profile picture`} />
-                            <span>{username}</span>
-                        </div>
-                        <p className="feed__comment">
-                            {comment}
-                        </p>
-                    </Comment_container>
-                    <p className="feed__time_container">
-                        <time dateTime={date}>{date}</time>
-                    </p>
-                </Feed_article>
+                {commentsElement}
+                <form className="feed__comment_form" onSubmit={(e) => addComment(e, id)}>
+                    <input type="text" name="comment" placeholder="add a comment"/>
+                    <button>Add</button>
+                </form>
             </div>
         </Section>
     )
