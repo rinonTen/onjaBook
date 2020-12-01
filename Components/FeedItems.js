@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Styled from 'styled-components';
+import { Context } from '../Context';
+import UserItems from '../Components/UsersItems';
 
 const Section = Styled.section`
     margin-bottom: 32px;
@@ -52,13 +54,22 @@ const Comment_container = Styled.div`
     }
 `
 
-export default function FeedItems({ username, profile, url, legend, date, likes, comments, id, increaseLikes, addComment }) {
+export default function FeedItems({ username, usernameId, profile, url, legend, date, likes, comments, id, increaseLikes, addComment }) {
+    const { state } = useContext(Context);
+    const { feed, users } = state;
+    let userObj = {};
+    if (users && feed) {
+        // const findUsernameId = feed.find(post => post.usernameId.id == findUserId)
+        // const findUsernameId = feed.map(post => post.usernameId)
+        userObj = users.find(user => user.id === usernameId);
+    }
+
     const commentsElement = comments && comments.map(comment => {
         return <Feed_article key={comment.id}>
             <Comment_container>
                 <div>
                     <Profile_img className="feed__profile" src={profile} alt={`${username}'s profile picture`} />
-                    <span>{username}</span>
+                    <span></span>
                 </div>
                 <p className="feed__comment">
                     {comment.comment}
@@ -69,30 +80,33 @@ export default function FeedItems({ username, profile, url, legend, date, likes,
             </p>
         </Feed_article>
     })
-    
+
     return (
         <Section>
             <div className="feed__container">
-                <Feed_header className="feed_header">
-                    <h2 className="feed_heading">
-                        <Profile_img className="feed__profile" src={profile} alt={`${username}'s profile picture`} />
-                        <span>{username}</span>
-                    </h2>
-                    <p className="feed__time_container">
-                        <time dateTime={date}>{date}</time>
-                    </p>
-                </Feed_header>
+                {userObj != {} && userObj ?
+                    <Feed_header className="feed_header">
+                        <h2 className="feed_heading">
+                            <Profile_img className="feed__profile" src={userObj.profile} alt={`'s profile picture`} />
+                            <span>{userObj.name}</span>
+                        </h2>
+                        <p className="feed__time_container">
+                            <time dateTime={date}>{date}</time>
+                        </p>
+                    </Feed_header>: ""
+                }
+
                 <Article >{legend}</Article>
                 <Article>
-                    <img src={url} alt={`${username}'s new post`} />
+                    <img src={url} alt={`'s new post`} />
                     <div className="feed_like">
                         <button onClick={() => increaseLikes(id)} className="feed__like_button">Like</button>
-                        <span>{likes}</span>
+                        {/* <span>{likes}</span> */}
                     </div>
                 </Article>
                 {commentsElement}
                 <form className="feed__comment_form" onSubmit={(e) => addComment(e, id)}>
-                    <input type="text" name="comment" placeholder="add a comment"/>
+                    <input type="text" name="comment" placeholder="add a comment" />
                     <button>Add</button>
                 </form>
             </div>

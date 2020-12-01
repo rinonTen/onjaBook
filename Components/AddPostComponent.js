@@ -4,12 +4,12 @@ import { Context } from '../Context';
 export default function AddPostComponent() {
     const { state, dispatch } = useContext(Context);
     const { textareaValue, urlPostValue, feed } = state;
+    // Get random profile from the object when adding
+
     function handleSubmit(e) {
         e.preventDefault();
         const newPost = {
-            "id": Date.now(),
-            "username": "Melody",
-            "profile": "alala",
+            "id": Date.now(), 
             "legend": textareaValue,
             "url": urlPostValue,
             "comments": [],
@@ -19,6 +19,7 @@ export default function AddPostComponent() {
         feed.push(newPost)
         dispatch({type: "SET_FEED", postData: feed })
     }
+
     return (
         <form className="add_post_form" onSubmit={handleSubmit}>
             <label htmlFor="post" className="textarea_label">New Post:</label>
