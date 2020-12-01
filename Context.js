@@ -6,7 +6,7 @@ function ContextProvider({children}) {
     const [state, dispatch] = useReducer((state, action) => {
         switch(action.type) {
             case "SET_FEED" : {
-                return {...state, feed: FeedData}
+                return {...state, feed: action.postData}
             }
             case "UPDATED_LIKES": {
                 return {...state, feed: action.updatedFeed}
@@ -14,18 +14,26 @@ function ContextProvider({children}) {
             case "SET_COMMENT": {
                 return {...state, feed: action.updatedComment}
             }
+            case "SET_TEXTAREAVALUE": {
+                return {...state, textareaValue: action.textareaValue}
+            }
+            case "SET_POSTURLVALUE": {
+                return {...state, urlPostValue: action.urlPostValue}
+            }
             default:
             return state
         }
     }, {
-      feed: [],   
+      feed: [],
+      textareaValue: "",
+      urlPostValue: ""   
     })
 
-    useEffect(() => {
-        dispatch({type: "SET_FEED"})
-    }, []);
+    const { feed } = state;
 
-    let {feed} = state;
+    useEffect(() => {
+        dispatch({type: "SET_FEED", postData: FeedData})
+    }, []);
  
     function increaseLikes(id) { 
       const newFeed =  feed.map(feed => {
@@ -65,7 +73,7 @@ function ContextProvider({children}) {
     }
      
     return (
-        <Context.Provider value={{feed, increaseLikes, addComment }}>
+        <Context.Provider value={{dispatch, state , increaseLikes, addComment }}>
             {children}
         </Context.Provider>
     )

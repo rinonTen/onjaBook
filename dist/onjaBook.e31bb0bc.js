@@ -33954,7 +33954,7 @@ function ContextProvider({
       case "SET_FEED":
         {
           return { ...state,
-            feed: _feed.default
+            feed: action.postData
           };
         }
 
@@ -33972,20 +33972,37 @@ function ContextProvider({
           };
         }
 
+      case "SET_TEXTAREAVALUE":
+        {
+          return { ...state,
+            textareaValue: action.textareaValue
+          };
+        }
+
+      case "SET_POSTURLVALUE":
+        {
+          return { ...state,
+            urlPostValue: action.urlPostValue
+          };
+        }
+
       default:
         return state;
     }
   }, {
-    feed: []
+    feed: [],
+    textareaValue: "",
+    urlPostValue: ""
   });
-  (0, _react.useEffect)(() => {
-    dispatch({
-      type: "SET_FEED"
-    });
-  }, []);
-  let {
+  const {
     feed
   } = state;
+  (0, _react.useEffect)(() => {
+    dispatch({
+      type: "SET_FEED",
+      postData: _feed.default
+    });
+  }, []);
 
   function increaseLikes(id) {
     const newFeed = feed.map(feed => {
@@ -34029,7 +34046,8 @@ function ContextProvider({
 
   return /*#__PURE__*/_react.default.createElement(Context.Provider, {
     value: {
-      feed,
+      dispatch,
+      state,
       increaseLikes,
       addComment
     }
@@ -36163,10 +36181,13 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
 
 function Feed() {
   const {
-    feed,
+    state,
     increaseLikes,
     addComment
   } = (0, _react.useContext)(_Context.Context);
+  const {
+    feed
+  } = state;
   const feedElement = feed.length > 0 && feed.map(feed => {
     return /*#__PURE__*/_react.default.createElement(_FeedItems.default, _extends({
       key: feed.id
@@ -36185,13 +36206,47 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = AddPostComponent;
 
-var _react = _interopRequireDefault(require("react"));
+var _react = _interopRequireWildcard(require("react"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _Context = require("../Context");
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function AddPostComponent() {
+  const {
+    state,
+    dispatch
+  } = (0, _react.useContext)(_Context.Context);
+  const {
+    textareaValue,
+    urlPostValue,
+    feed
+  } = state;
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const newPost = {
+      "id": Date.now(),
+      "username": "Melody",
+      "profile": "alala",
+      "legend": textareaValue,
+      "url": urlPostValue,
+      "comments": [],
+      "date": new Date().toLocaleDateString(),
+      "likes": 0
+    };
+    feed.push(newPost);
+    dispatch({
+      type: "SET_FEED",
+      postData: feed
+    });
+  }
+
   return /*#__PURE__*/_react.default.createElement("form", {
-    className: "add_post_form"
+    className: "add_post_form",
+    onSubmit: handleSubmit
   }, /*#__PURE__*/_react.default.createElement("label", {
     htmlFor: "post",
     className: "textarea_label"
@@ -36199,12 +36254,24 @@ function AddPostComponent() {
     id: "post",
     name: "post",
     rows: "4",
-    cols: "50"
+    cols: "50",
+    value: textareaValue,
+    onChange: e => dispatch({
+      type: "SET_TEXTAREAVALUE",
+      textareaValue: e.currentTarget.value
+    })
   }, "What's on your mind?"), /*#__PURE__*/_react.default.createElement("label", null, "Picture url:"), /*#__PURE__*/_react.default.createElement("input", {
-    type: "text"
-  }));
+    type: "text",
+    value: urlPostValue,
+    onChange: e => dispatch({
+      type: "SET_POSTURLVALUE",
+      urlPostValue: e.currentTarget.value
+    })
+  }), /*#__PURE__*/_react.default.createElement("div", {
+    className: "button_container"
+  }, /*#__PURE__*/_react.default.createElement("button", null, "Post")));
 }
-},{"react":"node_modules/react/index.js"}],"Pages/AddPost.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","../Context":"Context.js"}],"Pages/AddPost.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -36318,7 +36385,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50530" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52677" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
