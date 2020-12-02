@@ -31,12 +31,16 @@ function ContextProvider({ children }) {
             case "SET_USERURL": {
                 return { ...state, userProfileUrl: action.url }
             }
+            case "SET_USEROBJ": {
+                return {...state, userObj: action.user}
+            }
             default:
                 return state
         }
     }, {
         feed: [],
         users: [],
+        userObj: {},
         textareaValue: "",
         urlPostValue: "",
         username: "",
@@ -89,9 +93,19 @@ function ContextProvider({ children }) {
         //   reset the input
         e.target.comment.value = "";
     }
+ 
+    function findUser(usernameId) {
+        let findUserId;
+        if (users && feed) {
+            findUserId = users.find(user => user.id === usernameId);
+        }
 
+        useEffect(() => {
+            dispatch({type: "SET_USEROBJ", user: findUserId})
+        }, [])
+    }
     return (
-        <Context.Provider value={{ dispatch, state, increaseLikes, addComment, }}>
+        <Context.Provider value={{ dispatch, state, findUser, increaseLikes, addComment, }}>
             {children}
         </Context.Provider>
     )

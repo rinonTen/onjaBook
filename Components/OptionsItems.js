@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, {useEffect, useContext } from 'react';
 import Styled from 'styled-components';
 import { Context } from '../Context';
 
@@ -18,16 +18,19 @@ const Form = Styled.form`
 export default function OptionsItems() {
     const {state, dispatch} = useContext(Context);
     const {username, userProfileUrl} = state;
+    const {feed, users} = state; 
 
     function addNewUser(e) {
         e.preventDefault();
-      const newUser = {
+      const newUser = [{
             "id": Date.now(),
             "name": username,
             "profile": userProfileUrl
-          }
-    console.log(newUser);
+          }]
+        // users.push(newUser) 
+        dispatch({ type: "SET_USERS", user: newUser })
     }
+
     return (
         <Form onSubmit={addNewUser}>
             <h3>Option:</h3>

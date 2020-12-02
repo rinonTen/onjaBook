@@ -3,21 +3,32 @@ import { Context } from '../Context';
 
 export default function AddPostComponent() {
     const { state, dispatch } = useContext(Context);
-    const { textareaValue, urlPostValue, feed } = state;
-    // Get random profile from the object when adding
-
+    const { textareaValue, urlPostValue, feed, users } = state;
+    let usernameId; 
+    users.map(user =>{
+        usernameId = user.id;
+    });
+      
     function handleSubmit(e) {
         e.preventDefault();
         const newPost = {
-            "id": Date.now(), 
+            "id": Date.now(),
+            "usernameId": usernameId && usernameId,
             "legend": textareaValue,
             "url": urlPostValue,
-            "comments": [],
+            "comments": [
+                {
+                    "id": 160672232303713,
+                    "comment": "Really???",
+                    "date": "02/11/2020"
+                }
+            ],
             "date": new Date().toLocaleDateString(),
-            "likes": 0
+            "likes": []
         };
         feed.push(newPost)
-        dispatch({type: "SET_FEED", postData: feed })
+        console.log(newPost);
+        dispatch({ type: "SET_FEED", postData: feed })
     }
 
     return (

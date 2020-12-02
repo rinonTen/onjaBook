@@ -1,7 +1,8 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
-import styled from 'styled-components';
-import Styled from 'styled-components';
+import {Link} from 'react-router-dom'; 
+import Styled from 'styled-components'; 
+import CurrentUser from './CurrentUser';
+
 const Ul = Styled.ul`
     display: flex;
     justify-content: space-between;
@@ -28,7 +29,9 @@ export default function HeaderComponents() {
                         <Link to="/addPost">Add a post</Link>
                     </li>
                     <li>
-                        <Link to="/options">Username</Link>
+                        <Link to="/options">
+                            <CurrentUser />
+                        </Link>
                     </li>
                 </Ul>
             </nav>

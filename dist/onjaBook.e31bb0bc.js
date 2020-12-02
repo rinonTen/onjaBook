@@ -33906,21 +33906,23 @@ module.exports = [{
   "url": "https://picsum.photos/400/300",
   "comments": [{
     "id": 1667222238783,
-    "comment": "Nice pic e!"
+    "comment": "Nice pic e!",
+    "date": "01/12/2020"
   }],
   "date": "30/11/2020",
-  "likes2": [{
+  "likes": [{
     "id": 1606722206878,
     "likes": 0
   }]
 }, {
   "id": 1606722240371,
-  "usernameId": 1606822877195,
+  "usernameId": 1606822822195,
   "legend": "We looked at this beautiful image this morning",
   "url": "https://picsum.photos/399/300",
   "comments": [{
     "id": 160672277037133,
-    "comment": "Congrats man!"
+    "comment": "Congrats man!",
+    "date": "02/12/2020"
   }],
   "date": "22/11/2020",
   "likes": [{
@@ -34019,12 +34021,20 @@ function ContextProvider({
           };
         }
 
+      case "SET_USEROBJ":
+        {
+          return { ...state,
+            userObj: action.user
+          };
+        }
+
       default:
         return state;
     }
   }, {
     feed: [],
     users: [],
+    userObj: {},
     textareaValue: "",
     urlPostValue: "",
     username: "",
@@ -34083,10 +34093,26 @@ function ContextProvider({
     e.target.comment.value = "";
   }
 
+  function findUser(usernameId) {
+    let findUserId;
+
+    if (users && feed) {
+      findUserId = users.find(user => user.id === usernameId);
+    }
+
+    (0, _react.useEffect)(() => {
+      dispatch({
+        type: "SET_USEROBJ",
+        user: findUserId
+      });
+    }, []);
+  }
+
   return /*#__PURE__*/_react.default.createElement(Context.Provider, {
     value: {
       dispatch,
       state,
+      findUser,
       increaseLikes,
       addComment
     }
@@ -36013,7 +36039,71 @@ exports.ServerStyleSheet = Ue;
 "production" !== "development" && "undefined" != typeof navigator && "ReactNative" === navigator.product && console.warn("It looks like you've imported 'styled-components' on React Native.\nPerhaps you're looking to import 'styled-components/native'?\nRead more about this at https://www.styled-components.com/docs/basics#react-native"), "production" !== "development" && "test" !== "development" && (window["__styled-components-init__"] = window["__styled-components-init__"] || 0, 1 === window["__styled-components-init__"] && console.warn("It looks like there are several instances of 'styled-components' initialized in this application. This may cause dynamic styles to not render properly, errors during the rehydration process, a missing theme prop, and makes your application bigger without good reason.\n\nSee https://s-c.sh/2BAXzed for more info."), window["__styled-components-init__"] += 1);
 var _default = qe;
 exports.default = _default;
-},{"react-is":"node_modules/react-is/index.js","react":"node_modules/react/index.js","shallowequal":"node_modules/shallowequal/index.js","@emotion/stylis":"node_modules/@emotion/stylis/dist/stylis.browser.esm.js","@emotion/unitless":"node_modules/@emotion/unitless/dist/unitless.browser.esm.js","@emotion/is-prop-valid":"node_modules/@emotion/is-prop-valid/dist/is-prop-valid.browser.esm.js","hoist-non-react-statics":"node_modules/hoist-non-react-statics/dist/hoist-non-react-statics.cjs.js","process":"../../AppData/Roaming/npm/node_modules/parcel-bundler/node_modules/process/browser.js"}],"Components/HeaderComponent.js":[function(require,module,exports) {
+},{"react-is":"node_modules/react-is/index.js","react":"node_modules/react/index.js","shallowequal":"node_modules/shallowequal/index.js","@emotion/stylis":"node_modules/@emotion/stylis/dist/stylis.browser.esm.js","@emotion/unitless":"node_modules/@emotion/unitless/dist/unitless.browser.esm.js","@emotion/is-prop-valid":"node_modules/@emotion/is-prop-valid/dist/is-prop-valid.browser.esm.js","hoist-non-react-statics":"node_modules/hoist-non-react-statics/dist/hoist-non-react-statics.cjs.js","process":"../../AppData/Roaming/npm/node_modules/parcel-bundler/node_modules/process/browser.js"}],"Components/CurrentUser.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = CurrentUser;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _styledComponents = _interopRequireDefault(require("styled-components"));
+
+var _Context = require("../Context");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+const Div = _styledComponents.default.div`
+    display: flex;
+
+    & p {
+        font-size: 18px;
+        line-height: 24px;
+        margin-right: 16px;
+    }
+    & img {
+        max-width: 30px;
+        height: 30px;
+        border-radius: 50%;
+    }
+    
+`;
+const Post_header = _styledComponents.default.header`
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 32px;
+`;
+
+function CurrentUser({
+  date
+}) {
+  const {
+    state
+  } = (0, _react.useContext)(_Context.Context);
+  const {
+    users
+  } = state;
+  const userEl = users.map(user => {
+    return /*#__PURE__*/_react.default.createElement(Post_header, {
+      key: user.id
+    }, /*#__PURE__*/_react.default.createElement(Div, null, /*#__PURE__*/_react.default.createElement("p", null, user.name), /*#__PURE__*/_react.default.createElement("img", {
+      src: user.profile,
+      alt: `${user.name}'profile picture`
+    })), date && /*#__PURE__*/_react.default.createElement("p", {
+      className: "feed__time_container"
+    }, /*#__PURE__*/_react.default.createElement("time", {
+      dateTime: date
+    }, date)));
+  });
+  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, userEl);
+}
+},{"react":"node_modules/react/index.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js","../Context":"Context.js"}],"Components/HeaderComponent.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -36026,6 +36116,8 @@ var _react = _interopRequireDefault(require("react"));
 var _reactRouterDom = require("react-router-dom");
 
 var _styledComponents = _interopRequireDefault(require("styled-components"));
+
+var _CurrentUser = _interopRequireDefault(require("./CurrentUser"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -36051,9 +36143,9 @@ function HeaderComponents() {
     to: "/addPost"
   }, "Add a post")), /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
     to: "/options"
-  }, "Username")))));
+  }, /*#__PURE__*/_react.default.createElement(_CurrentUser.default, null))))));
 }
-},{"react":"node_modules/react/index.js","react-router-dom":"node_modules/react-router-dom/esm/react-router-dom.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js"}],"Pages/Header.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","react-router-dom":"node_modules/react-router-dom/esm/react-router-dom.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js","./CurrentUser":"Components/CurrentUser.js"}],"Pages/Header.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -36080,20 +36172,132 @@ exports.default = UsersItems;
 
 var _react = _interopRequireWildcard(require("react"));
 
+var _styledComponents = _interopRequireDefault(require("styled-components"));
+
 var _Context = require("../Context");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-function UsersItems() {
+const Feed_header = _styledComponents.default.header`
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 32px;
+
+    & span {
+        display: block;
+    }
+
+    & h2 {
+         display: flex;
+         column-gap: 32px;
+    }
+`;
+const Profile_img = _styledComponents.default.img`
+max-width: 40px;
+height: 40px;
+border-radius: 50%;
+`;
+
+function UsersItems({
+  usernameId,
+  date
+}) {
   const {
     state,
-    dispatch
+    findUser
   } = (0, _react.useContext)(_Context.Context);
-  return /*#__PURE__*/_react.default.createElement("div", null);
+  const {
+    userObj
+  } = state;
+  findUser(usernameId);
+  return /*#__PURE__*/_react.default.createElement("div", null, userObj != {} && userObj ? /*#__PURE__*/_react.default.createElement(Feed_header, {
+    className: "feed_header"
+  }, /*#__PURE__*/_react.default.createElement("h2", {
+    className: "feed_heading"
+  }, /*#__PURE__*/_react.default.createElement(Profile_img, {
+    className: "feed__profile",
+    src: userObj.profile,
+    alt: `'s profile picture`
+  }), /*#__PURE__*/_react.default.createElement("span", null, userObj.name)), date && /*#__PURE__*/_react.default.createElement("p", {
+    className: "feed__time_container"
+  }, /*#__PURE__*/_react.default.createElement("time", {
+    dateTime: date
+  }, date))) : "");
 }
-},{"react":"node_modules/react/index.js","../Context":"Context.js"}],"Components/FeedItems.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js","../Context":"Context.js"}],"Components/CommentComponent.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = CommentComponent;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _styledComponents = _interopRequireDefault(require("styled-components"));
+
+var _Context = require("../Context");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+const Profile_img = _styledComponents.default.img`
+max-width: 40px;
+height: 40px;
+border-radius: 50%;
+`;
+const Feed_article = _styledComponents.default.div`
+    display: flex;
+    justify-content: space-between;
+`;
+const Comment_container = _styledComponents.default.div`
+    & div {
+        display: flex;
+        column-gap: 48px;
+    }
+    & span {
+        display: block;
+    }
+`;
+
+function CommentComponent({
+  comments,
+  date,
+  usernameId
+}) {
+  const {
+    state,
+    findUser
+  } = (0, _react.useContext)(_Context.Context);
+  const {
+    userObj
+  } = state;
+  findUser(usernameId);
+  const commentsElement = comments && userObj !== {} ? comments.map(comment => {
+    return /*#__PURE__*/_react.default.createElement(Feed_article, {
+      key: comment.id
+    }, /*#__PURE__*/_react.default.createElement(Comment_container, null, userObj && /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement(Profile_img, {
+      className: "feed__profile",
+      src: userObj.profile,
+      alt: `${userObj.name}'s profile picture`
+    }), /*#__PURE__*/_react.default.createElement("span", null, userObj.name)), /*#__PURE__*/_react.default.createElement("p", {
+      className: "feed__comment"
+    }, comment.comment)), /*#__PURE__*/_react.default.createElement("p", {
+      className: "feed__time_container"
+    }, /*#__PURE__*/_react.default.createElement("time", {
+      dateTime: date
+    }, comment.date)));
+  }) : /*#__PURE__*/_react.default.createElement("p", null, "No comment!");
+  return /*#__PURE__*/_react.default.createElement("div", null, commentsElement);
+}
+},{"react":"node_modules/react/index.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js","../Context":"Context.js"}],"Components/FeedItems.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -36105,9 +36309,11 @@ var _react = _interopRequireWildcard(require("react"));
 
 var _styledComponents = _interopRequireDefault(require("styled-components"));
 
-var _Context = require("../Context");
+var _UsersItems = _interopRequireDefault(require("./UsersItems"));
 
-var _UsersItems = _interopRequireDefault(require("../Components/UsersItems"));
+var _CommentComponent = _interopRequireDefault(require("./CommentComponent"));
+
+var _CurrentUser = _interopRequireDefault(require("./CurrentUser"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -36132,43 +36338,9 @@ const Article = _styledComponents.default.article`
         margin-right: 16px;
     }
 `;
-const Profile_img = _styledComponents.default.img`
-max-width: 40px;
-height: 40px;
-border-radius: 50%;
-`;
-const Feed_header = _styledComponents.default.header`
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 32px;
-
-    & span {
-        display: block;
-    }
-
-    & h2 {
-         display: flex;
-         column-gap: 32px;
-    }
-`;
-const Feed_article = _styledComponents.default.div`
-    display: flex;
-    justify-content: space-between;
-`;
-const Comment_container = _styledComponents.default.div`
-    & div {
-        display: flex;
-        column-gap: 48px;
-    }
-    & span {
-        display: block;
-    }
-`;
 
 function FeedItems({
-  username,
   usernameId,
-  profile,
   url,
   legend,
   date,
@@ -36178,51 +36350,11 @@ function FeedItems({
   increaseLikes,
   addComment
 }) {
-  const {
-    state
-  } = (0, _react.useContext)(_Context.Context);
-  const {
-    feed,
-    users
-  } = state;
-  let userObj = {};
-
-  if (users && feed) {
-    // const findUsernameId = feed.find(post => post.usernameId.id == findUserId)
-    // const findUsernameId = feed.map(post => post.usernameId)
-    userObj = users.find(user => user.id === usernameId);
-  }
-
-  const commentsElement = comments && comments.map(comment => {
-    return /*#__PURE__*/_react.default.createElement(Feed_article, {
-      key: comment.id
-    }, /*#__PURE__*/_react.default.createElement(Comment_container, null, /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement(Profile_img, {
-      className: "feed__profile",
-      src: profile,
-      alt: `${username}'s profile picture`
-    }), /*#__PURE__*/_react.default.createElement("span", null)), /*#__PURE__*/_react.default.createElement("p", {
-      className: "feed__comment"
-    }, comment.comment)), /*#__PURE__*/_react.default.createElement("p", {
-      className: "feed__time_container"
-    }, /*#__PURE__*/_react.default.createElement("time", {
-      dateTime: date
-    }, comment.date)));
-  });
-  return /*#__PURE__*/_react.default.createElement(Section, null, /*#__PURE__*/_react.default.createElement("div", {
+  return /*#__PURE__*/_react.default.createElement(Section, null, /*#__PURE__*/_react.default.createElement(_CurrentUser.default, {
+    date: date
+  }), /*#__PURE__*/_react.default.createElement("div", {
     className: "feed__container"
-  }, userObj != {} && userObj ? /*#__PURE__*/_react.default.createElement(Feed_header, {
-    className: "feed_header"
-  }, /*#__PURE__*/_react.default.createElement("h2", {
-    className: "feed_heading"
-  }, /*#__PURE__*/_react.default.createElement(Profile_img, {
-    className: "feed__profile",
-    src: userObj.profile,
-    alt: `'s profile picture`
-  }), /*#__PURE__*/_react.default.createElement("span", null, userObj.name)), /*#__PURE__*/_react.default.createElement("p", {
-    className: "feed__time_container"
-  }, /*#__PURE__*/_react.default.createElement("time", {
-    dateTime: date
-  }, date))) : "", /*#__PURE__*/_react.default.createElement(Article, null, legend), /*#__PURE__*/_react.default.createElement(Article, null, /*#__PURE__*/_react.default.createElement("img", {
+  }, /*#__PURE__*/_react.default.createElement(Article, null, legend), /*#__PURE__*/_react.default.createElement(Article, null, /*#__PURE__*/_react.default.createElement("img", {
     src: url,
     alt: `'s new post`
   }), /*#__PURE__*/_react.default.createElement("div", {
@@ -36230,7 +36362,11 @@ function FeedItems({
   }, /*#__PURE__*/_react.default.createElement("button", {
     onClick: () => increaseLikes(id),
     className: "feed__like_button"
-  }, "Like"))), commentsElement, /*#__PURE__*/_react.default.createElement("form", {
+  }, "Like"))), /*#__PURE__*/_react.default.createElement(_CommentComponent.default, {
+    comments: comments,
+    usernameId: usernameId,
+    date: date
+  }), /*#__PURE__*/_react.default.createElement("form", {
     className: "feed__comment_form",
     onSubmit: e => addComment(e, id)
   }, /*#__PURE__*/_react.default.createElement("input", {
@@ -36239,7 +36375,7 @@ function FeedItems({
     placeholder: "add a comment"
   }), /*#__PURE__*/_react.default.createElement("button", null, "Add"))));
 }
-},{"react":"node_modules/react/index.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js","../Context":"Context.js","../Components/UsersItems":"Components/UsersItems.js"}],"Pages/Feed.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js","./UsersItems":"Components/UsersItems.js","./CommentComponent":"Components/CommentComponent.js","./CurrentUser":"Components/CurrentUser.js"}],"Pages/Feed.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -36304,20 +36440,31 @@ function AddPostComponent() {
   const {
     textareaValue,
     urlPostValue,
-    feed
-  } = state; // Get random profile from the object when adding
+    feed,
+    users
+  } = state;
+  let usernameId;
+  users.map(user => {
+    usernameId = user.id;
+  });
 
   function handleSubmit(e) {
     e.preventDefault();
     const newPost = {
       "id": Date.now(),
+      "usernameId": usernameId && usernameId,
       "legend": textareaValue,
       "url": urlPostValue,
-      "comments": [],
+      "comments": [{
+        "id": 160672232303713,
+        "comment": "Really???",
+        "date": "02/11/2020"
+      }],
       "date": new Date().toLocaleDateString(),
-      "likes": 0
+      "likes": []
     };
     feed.push(newPost);
+    console.log(newPost);
     dispatch({
       type: "SET_FEED",
       postData: feed
@@ -36410,15 +36557,23 @@ function OptionsItems() {
     username,
     userProfileUrl
   } = state;
+  const {
+    feed,
+    users
+  } = state;
 
   function addNewUser(e) {
     e.preventDefault();
-    const newUser = {
+    const newUser = [{
       "id": Date.now(),
       "name": username,
       "profile": userProfileUrl
-    };
-    console.log(newUser);
+    }]; // users.push(newUser) 
+
+    dispatch({
+      type: "SET_USERS",
+      user: newUser
+    });
   }
 
   return /*#__PURE__*/_react.default.createElement(Form, {
@@ -36546,7 +36701,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52677" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55441" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

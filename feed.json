@@ -1,5 +1,5 @@
 [
-  {
+  { 
     "id": 1606722206878,
     "usernameId": 1606822822195,
     "legend": "Beach revives myself",
@@ -7,21 +7,23 @@
     "comments": [
       {
         "id": 1667222238783,
-        "comment": "Nice pic e!"
+        "comment": "Nice pic e!",
+        "date": "01/12/2020"
       }
     ],
     "date": "30/11/2020", 
-    "likes2": [{ "id": 1606722206878, "likes": 0 }]
+    "likes": [{ "id": 1606722206878, "likes": 0 }]
   },
   {
     "id": 1606722240371,
-    "usernameId": 1606822877195,
+    "usernameId": 1606822822195,
     "legend": "We looked at this beautiful image this morning",
     "url": "https://picsum.photos/399/300",
     "comments": [
       {
         "id": 160672277037133,
-        "comment": "Congrats man!"
+        "comment": "Congrats man!",
+        "date": "02/12/2020"
       }
     ],
     "date": "22/11/2020", 
@@ -32,4 +34,5 @@
       }
     ]
   }
+  
 ]
