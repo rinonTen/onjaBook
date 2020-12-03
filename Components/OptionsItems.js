@@ -26,8 +26,7 @@ export default function OptionsItems() {
             "id": Date.now(),
             "name": username,
             "profile": userProfileUrl
-          }]
-        // users.push(newUser) 
+          }] 
         dispatch({ type: "SET_USERS", user: newUser })
     }
 

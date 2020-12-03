@@ -16,19 +16,17 @@ const Feed_article = Styled.div`
 const Comment_container = Styled.div`
     & div {
         display: flex;
-        column-gap: 48px;
+        column-gap: 22px;
     }
     & span {
         display: block;
     }
 `
 export default function CommentComponent({ comments, date, usernameId }) {
-    const { state, findUser } = useContext(Context);
+    const { state } = useContext(Context);
     const { userObj, users } = state;
-
-    findUser(usernameId)
-
-    const commentsElement = comments && userObj !== {} ? comments.map(comment => {
+ 
+    const commentsElement = comments ? comments.map(comment => {
 
         return <Feed_article key={comment.id}>
             <Comment_container>

@@ -1,4 +1,7 @@
 body {
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
     background-color: gainsboro;
     padding: 16px; 
     padding-right: 32px;
@@ -19,6 +22,31 @@ a {
 
 label {
     display: block;
+}
+
+img {
+    width: 100%;
+}
+
+form.feed__comment_form {
+    max-width: 70%;
+    display: flex;
+    margin-top: 12px;
+}
+
+form.feed__comment_form input{
+    border: .4px solid gray;
+    border-radius: 8px;
+    width: 100%;
+    padding: 8px;
+}
+
+form.feed__comment_form button{
+    border: .4px solid gray;
+    border-radius: 8px;
+    margin-left: -62px;
+    padding-left: 18px;
+    padding-right: 18px;
 }
 
 /*# sourceMappingURL=/styles.8986bff4.css.map */

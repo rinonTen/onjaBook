@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import Styled from 'styled-components';
-import { Context } from '../Context';
-import UserItems from './UsersItems';
+import { Context } from '../Context'; 
 import CommentComponent from "./CommentComponent";
 import CurrentUser from './CurrentUser';
 
@@ -27,7 +26,6 @@ const Article = Styled.article`
 export default function FeedItems({ usernameId, url, legend, date, like, comments, id, increaseLikes, addComment }) {
     const { state } = useContext(Context);
     
-
     return (
                 <Section>
                     <CurrentUser date={date} />

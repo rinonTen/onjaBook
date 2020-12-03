@@ -46,7 +46,6 @@ function ContextProvider({ children }) {
         urlPostValue: "",
         username: "",
         userProfileUrl: "",
-         
     })
 
     const { feed, users } = state;
@@ -57,15 +56,14 @@ function ContextProvider({ children }) {
    
     useEffect(() => {
         dispatch({ type: "SET_USERS", user: Users })
-    }, [feed])
+    }, [])
 
-
- let usernameId; 
+    function increaseLikes(id) {
+        let usernameId; 
     users.map(user =>{
         usernameId = user.id;
     }); 
 
-    function increaseLikes(id) {
         const likesFromUser = {
             "likeId": 160672220228,
             "usernameId": usernameId && usernameId
@@ -76,6 +74,8 @@ function ContextProvider({ children }) {
             feed.likes.map(like => {
                userId = like.usernameId
             }); 
+            console.log(userId);
+          console.log(likesFromUser.usernameId)
         		if (feed.id === id ) {
                     if (userId !== likesFromUser.usernameId) {
                         return{
@@ -108,24 +108,15 @@ function ContextProvider({ children }) {
             }
             return feed
         })
-
+ 
         dispatch({ type: "SET_COMMENT", updatedComment: updatedFeed})
         //   reset the input
         e.target.comment.value = "";
     }
  
-    function findUser(usernameId) {
-        let findUserId;
-        if (users && feed) {
-            findUserId = users.find(user => user.id === usernameId);
-        }
-
-        useEffect(() => {
-            dispatch({type: "SET_USEROBJ", user: findUserId})
-        }, [])
-    }
+  
     return (
-        <Context.Provider value={{ dispatch, state, findUser, increaseLikes, addComment, }}>
+        <Context.Provider value={{ dispatch, state, increaseLikes, addComment, }}>
             {children}
         </Context.Provider>
     )

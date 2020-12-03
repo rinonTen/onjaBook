@@ -34057,13 +34057,13 @@ function ContextProvider({
       type: "SET_USERS",
       user: _users.default
     });
-  }, [feed]);
-  let usernameId;
-  users.map(user => {
-    usernameId = user.id;
-  });
+  }, []);
 
   function increaseLikes(id) {
+    let usernameId;
+    users.map(user => {
+      usernameId = user.id;
+    });
     const likesFromUser = {
       "likeId": 160672220228,
       "usernameId": usernameId && usernameId
@@ -34073,6 +34073,8 @@ function ContextProvider({
       feed.likes.map(like => {
         userId = like.usernameId;
       });
+      console.log(userId);
+      console.log(likesFromUser.usernameId);
 
       if (feed.id === id) {
         if (userId !== likesFromUser.usernameId) {
@@ -34115,26 +34117,10 @@ function ContextProvider({
     e.target.comment.value = "";
   }
 
-  function findUser(usernameId) {
-    let findUserId;
-
-    if (users && feed) {
-      findUserId = users.find(user => user.id === usernameId);
-    }
-
-    (0, _react.useEffect)(() => {
-      dispatch({
-        type: "SET_USEROBJ",
-        user: findUserId
-      });
-    }, []);
-  }
-
   return /*#__PURE__*/_react.default.createElement(Context.Provider, {
     value: {
       dispatch,
       state,
-      findUser,
       increaseLikes,
       addComment
     }
@@ -36184,73 +36170,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function Header() {
   return /*#__PURE__*/_react.default.createElement(_HeaderComponent.default, null);
 }
-},{"react":"node_modules/react/index.js","../Components/HeaderComponent":"Components/HeaderComponent.js"}],"Components/UsersItems.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = UsersItems;
-
-var _react = _interopRequireWildcard(require("react"));
-
-var _styledComponents = _interopRequireDefault(require("styled-components"));
-
-var _Context = require("../Context");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-const Feed_header = _styledComponents.default.header`
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 32px;
-
-    & span {
-        display: block;
-    }
-
-    & h2 {
-         display: flex;
-         column-gap: 32px;
-    }
-`;
-const Profile_img = _styledComponents.default.img`
-max-width: 40px;
-height: 40px;
-border-radius: 50%;
-`;
-
-function UsersItems({
-  usernameId,
-  date
-}) {
-  const {
-    state,
-    findUser
-  } = (0, _react.useContext)(_Context.Context);
-  const {
-    userObj
-  } = state;
-  findUser(usernameId);
-  return /*#__PURE__*/_react.default.createElement("div", null, userObj != {} && userObj ? /*#__PURE__*/_react.default.createElement(Feed_header, {
-    className: "feed_header"
-  }, /*#__PURE__*/_react.default.createElement("h2", {
-    className: "feed_heading"
-  }, /*#__PURE__*/_react.default.createElement(Profile_img, {
-    className: "feed__profile",
-    src: userObj.profile,
-    alt: `'s profile picture`
-  }), /*#__PURE__*/_react.default.createElement("span", null, userObj.name)), date && /*#__PURE__*/_react.default.createElement("p", {
-    className: "feed__time_container"
-  }, /*#__PURE__*/_react.default.createElement("time", {
-    dateTime: date
-  }, date))) : "");
-}
-},{"react":"node_modules/react/index.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js","../Context":"Context.js"}],"Components/CommentComponent.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","../Components/HeaderComponent":"Components/HeaderComponent.js"}],"Components/CommentComponent.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -36282,7 +36202,7 @@ const Feed_article = _styledComponents.default.div`
 const Comment_container = _styledComponents.default.div`
     & div {
         display: flex;
-        column-gap: 48px;
+        column-gap: 22px;
     }
     & span {
         display: block;
@@ -36295,15 +36215,13 @@ function CommentComponent({
   usernameId
 }) {
   const {
-    state,
-    findUser
+    state
   } = (0, _react.useContext)(_Context.Context);
   const {
     userObj,
     users
   } = state;
-  findUser(usernameId);
-  const commentsElement = comments && userObj !== {} ? comments.map(comment => {
+  const commentsElement = comments ? comments.map(comment => {
     return /*#__PURE__*/_react.default.createElement(Feed_article, {
       key: comment.id
     }, /*#__PURE__*/_react.default.createElement(Comment_container, null, users.map(user => {
@@ -36337,8 +36255,6 @@ var _react = _interopRequireWildcard(require("react"));
 var _styledComponents = _interopRequireDefault(require("styled-components"));
 
 var _Context = require("../Context");
-
-var _UsersItems = _interopRequireDefault(require("./UsersItems"));
 
 var _CommentComponent = _interopRequireDefault(require("./CommentComponent"));
 
@@ -36407,7 +36323,7 @@ function FeedItems({
     placeholder: "add a comment"
   }), /*#__PURE__*/_react.default.createElement("button", null, "Add"))));
 }
-},{"react":"node_modules/react/index.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js","../Context":"Context.js","./UsersItems":"Components/UsersItems.js","./CommentComponent":"Components/CommentComponent.js","./CurrentUser":"Components/CurrentUser.js"}],"Pages/Feed.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js","../Context":"Context.js","./CommentComponent":"Components/CommentComponent.js","./CurrentUser":"Components/CurrentUser.js"}],"Pages/Feed.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -36619,8 +36535,7 @@ function OptionsItems() {
       "id": Date.now(),
       "name": username,
       "profile": userProfileUrl
-    }]; // users.push(newUser) 
-
+    }];
     dispatch({
       type: "SET_USERS",
       user: newUser
@@ -36752,7 +36667,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60268" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52307" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
