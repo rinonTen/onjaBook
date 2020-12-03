@@ -33910,6 +33910,7 @@ module.exports = [{
     "date": "01/12/2020"
   }],
   "date": "30/11/2020",
+  "isFavoritedByUser": false,
   "like": 0,
   "likes": [{
     "likeId": 1606722206878,
@@ -33926,6 +33927,7 @@ module.exports = [{
     "date": "02/12/2020"
   }],
   "date": "22/11/2020",
+  "isFavoritedByUser": false,
   "like": 0,
   "likes": [{
     "likeId": 1606722240371,
@@ -34041,7 +34043,8 @@ function ContextProvider({
     urlPostValue: "",
     username: "",
     userProfileUrl: ""
-  });
+  }); // const [isFavorited, setIsFavorited] = useState(false);
+
   const {
     feed,
     users
@@ -34069,18 +34072,20 @@ function ContextProvider({
       "usernameId": usernameId && usernameId
     };
     const newFeed = feed.map(feed => {
+      feed.isFavoritedByUser = !feed.isFavoritedByUser;
       let userId;
       feed.likes.map(like => {
         userId = like.usernameId;
       });
-      console.log(userId);
-      console.log(likesFromUser.usernameId);
 
       if (feed.id === id) {
+        if (feed.isFavoritedByUser && userId !== likesFromUser.usernameId) {
+          feed.like = feed.like + 1;
+        }
+
         if (userId !== likesFromUser.usernameId) {
           return { ...feed,
-            likes: [...feed.likes, likesFromUser],
-            like: feed.like + 1
+            likes: [...feed.likes, likesFromUser]
           };
         }
       }
@@ -36667,7 +36672,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52307" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52816" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

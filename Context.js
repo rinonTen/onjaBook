@@ -48,6 +48,8 @@ function ContextProvider({ children }) {
         userProfileUrl: "",
     })
 
+// const [isFavorited, setIsFavorited] = useState(false);
+
     const { feed, users } = state;
 
     useEffect(() => {
@@ -60,7 +62,7 @@ function ContextProvider({ children }) {
 
     function increaseLikes(id) {
         let usernameId; 
-    users.map(user =>{
+        users.map(user =>{
         usernameId = user.id;
     }); 
 
@@ -70,23 +72,28 @@ function ContextProvider({ children }) {
         }
 
           const newFeed =  feed.map(feed => {
+                feed.isFavoritedByUser = !feed.isFavoritedByUser 
+           
             let userId;
             feed.likes.map(like => {
                userId = like.usernameId
-            }); 
-            console.log(userId);
-          console.log(likesFromUser.usernameId)
+            });  
         		if (feed.id === id ) {
+                     if(feed.isFavoritedByUser && userId !== likesFromUser.usernameId) {
+                          feed.like = feed.like + 1
+                     }
                     if (userId !== likesFromUser.usernameId) {
                         return{
                             ...feed,
                             likes: [...feed.likes, likesFromUser],
-                            like: feed.like + 1
                           }
                     }
+                    
+
             }
             return feed
             }) 
+  
         dispatch({type: "UPDATED_LIKES", updatedFeed: newFeed})
     }
 
