@@ -24,18 +24,22 @@ const Comment_container = Styled.div`
 `
 export default function CommentComponent({ comments, date, usernameId }) {
     const { state, findUser } = useContext(Context);
-    const { userObj } = state;
+    const { userObj, users } = state;
+
     findUser(usernameId)
 
     const commentsElement = comments && userObj !== {} ? comments.map(comment => {
 
         return <Feed_article key={comment.id}>
             <Comment_container>
-                {userObj &&
-                    <div>
-                        <Profile_img className="feed__profile" src={userObj.profile} alt={`${userObj.name}'s profile picture`} />
-                        <span>{userObj.name}</span>
-                    </div>
+                {users.map(user => {
+                    return (
+                        <div key={user.id}>
+                            <Profile_img className="feed__profile" src={user.profile} alt={`${user.name}'s profile picture`} />
+                            <span>{user.name}</span>
+                        </div>
+                    )
+                })
                 }
                 <p className="feed__comment">
                     {comment.comment}

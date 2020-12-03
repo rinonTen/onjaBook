@@ -24,7 +24,8 @@ const Post_header = Styled.header`
 `
 export default function CurrentUser({ date }) {
     const { state } = useContext(Context);
-    const { users } = state
+    const { users } = state;
+    
     const userEl = users.map(user => {
         return (
             <Post_header key={user.id}>

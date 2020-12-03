@@ -24,10 +24,15 @@ export default function AddPostComponent() {
                 }
             ],
             "date": new Date().toLocaleDateString(),
-            "likes": []
+            "likes": [
+                {
+                    "likeId": Date.now(),
+                    "usernameId": usernameId && usernameId,
+                    "likes": 0
+                }
+            ]
         };
-        feed.push(newPost)
-        console.log(newPost);
+        feed.push(newPost) 
         dispatch({ type: "SET_FEED", postData: feed })
     }
 

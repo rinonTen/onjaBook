@@ -39,7 +39,7 @@ export default function OptionsItems() {
                 dispatch({type:"SET_USERNAME", username: e.target.value})
             }} />
             <label>Profile picture:</label>
-            <input type="text" value={userProfileUrl} placeholder="paste a url here" onChange={(e) => {
+            <input type="url" value={userProfileUrl} placeholder="paste a url here" onChange={(e) => {
                 dispatch({type: "SET_USERURL", url: e.target.value})
             }} />
             <div className="button__container">
