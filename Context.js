@@ -4,37 +4,47 @@ import Users from './users.json';
 
 
 const Context = createContext();
+
 function ContextProvider({ children }) {
     const [state, dispatch] = useReducer((state, action) => {
-       
+
         switch (action.type) {
-            case "SET_FEED": {
-                return { ...state, feed: action.postData }
-            }
-            case "SET_USERS": {
-                return { ...state, users: action.user }
-            }
-            case "UPDATED_LIKES": {
-                return { ...state, feed: action.updatedFeed }
-            }
-            case "SET_COMMENT": {
-                return { ...state, feed: action.updatedComment }
-            }
-            case "SET_TEXTAREAVALUE": {
-                return { ...state, textareaValue: action.textareaValue }
-            }
-            case "SET_POSTURLVALUE": {
-                return { ...state, urlPostValue: action.urlPostValue }
-            }
-            case "SET_USERNAME": {
-                return { ...state, username: action.username }
-            }
-            case "SET_USERURL": {
-                return { ...state, userProfileUrl: action.url }
-            }
-            case "SET_USEROBJ": {
-                return {...state, userObj: action.user}
-            }
+            case "SET_FEED":
+                {
+                    return { ...state, feed: action.postData }
+                }
+            case "SET_USERS":
+                {
+                    return { ...state, users: action.user }
+                }
+            case "UPDATED_LIKES":
+                {
+                    return { ...state, feed: action.updatedFeed }
+                }
+            case "SET_COMMENT":
+                {
+                    return { ...state, feed: action.updatedComment }
+                }
+            case "SET_TEXTAREAVALUE":
+                {
+                    return { ...state, textareaValue: action.textareaValue }
+                }
+            case "SET_POSTURLVALUE":
+                {
+                    return { ...state, urlPostValue: action.urlPostValue }
+                }
+            case "SET_USERNAME":
+                {
+                    return { ...state, username: action.username }
+                }
+            case "SET_USERURL":
+                {
+                    return { ...state, userProfileUrl: action.url }
+                }
+            case "SET_USEROBJ":
+                {
+                    return { ...state, userObj: action.user }
+                }
             default:
                 return state
         }
@@ -48,53 +58,65 @@ function ContextProvider({ children }) {
         userProfileUrl: "",
     })
 
-// const [isFavorited, setIsFavorited] = useState(false);
+    // const [isFavorited, setIsFavorited] = useState(false);
 
     const { feed, users } = state;
 
     useEffect(() => {
         dispatch({ type: "SET_FEED", postData: FeedData })
     }, []);
-   
+
     useEffect(() => {
         dispatch({ type: "SET_USERS", user: Users })
     }, [])
 
     function increaseLikes(id) {
-        let usernameId; 
-        users.map(user =>{
-        usernameId = user.id;
-    }); 
+        let usernameId;
+        users.map(user => {
+            usernameId = user.id;
+        });
 
         const likesFromUser = {
             "likeId": 160672220228,
             "usernameId": usernameId && usernameId
         }
 
-          const newFeed =  feed.map(feed => {
-                feed.isFavoritedByUser = !feed.isFavoritedByUser 
-           
+        const newFeed = feed.map(feed => { 
+
             let userId;
             feed.likes.map(like => {
-               userId = like.usernameId
-            });  
-        		if (feed.id === id ) {
-                     if(feed.isFavoritedByUser && userId !== likesFromUser.usernameId) {
-                          feed.like = feed.like + 1
-                     }
-                    if (userId !== likesFromUser.usernameId) {
-                        return{
-                            ...feed,
-                            likes: [...feed.likes, likesFromUser],
-                          }
-                    }
-                    
+                userId = like.usernameId
+            });
 
+            if (feed.id === id) {
+                if (userId !== likesFromUser.usernameId) {
+                    return {
+                        ...feed,
+                        likes: [...feed.likes, likesFromUser],
+                        isFavoritedByUser: !feed.isFavoritedByUser,
+                    }
+                } 
+
+                if(feed.isFavoritedByUser) {
+                    return {
+                        ...feed, 
+                        isFavoritedByUser: !feed.isFavoritedByUser, 
+                        like: feed.like + 1
+                    }
+                }
+
+                if(!feed.isFavoritedByUser) {
+                    return {
+                        ...feed,  
+                        isFavoritedByUser: !feed.isFavoritedByUser, 
+                        like: feed.like - 1
+                    }
+                }
             }
             return feed
-            }) 
-  
-        dispatch({type: "UPDATED_LIKES", updatedFeed: newFeed})
+        })
+
+        dispatch({ type: "UPDATED_LIKES", updatedFeed: newFeed })
     }
 
 
@@ -115,16 +137,16 @@ function ContextProvider({ children }) {
             }
             return feed
         })
- 
-        dispatch({ type: "SET_COMMENT", updatedComment: updatedFeed})
+
+        dispatch({ type: "SET_COMMENT", updatedComment: updatedFeed })
         //   reset the input
         e.target.comment.value = "";
     }
- 
-  
+
+
     return (
         <Context.Provider value={{ dispatch, state, increaseLikes, addComment, }}>
-            {children}
+            { children}
         </Context.Provider>
     )
 }
